@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace programmingTechnologyV10.Properties
+namespace MySorts.Properties
 {
 
 
