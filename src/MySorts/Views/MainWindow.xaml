@@ -1,0 +1,35 @@
+﻿<Window x:Class="MySorts.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySorts"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <GroupBox Header="Добавить данные">
+                <xctk:BusyIndicator IsBusy="{Binding IsSorting}" BusyContent="Идет сортировка новых данных">
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Width="200" MaxLength="20" VerticalContentAlignment="Center" Text="{Binding ManualAddText}"/>
+                            <Button Grid.Column="1" Command="{Binding ManualAddCommand}">
+                                <Image Source="/Images/ic_add_black_24dp.png"></Image>
+                            </Button>
+                        </Grid>
+                        <Button Margin="2" Padding="2" Command="{Binding FileAddCommand}">Загрузить из файла</Button>
+                    </StackPanel>
+                </xctk:BusyIndicator>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Window>

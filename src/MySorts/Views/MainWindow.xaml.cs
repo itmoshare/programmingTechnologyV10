@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MySorts.ViewModels;
 
-namespace MySorts
+namespace MySorts.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +24,7 @@ namespace MySorts
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
     }
 }
