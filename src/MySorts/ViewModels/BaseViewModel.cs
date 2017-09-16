@@ -10,7 +10,7 @@ namespace MySorts.ViewModels
 
         protected void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public class Command : ICommand

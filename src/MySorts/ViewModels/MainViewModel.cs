@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Microsoft.Win32;
 using MySorts.Models;
 
@@ -11,6 +16,37 @@ namespace MySorts.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private readonly MultipleSorter<int> _multipleSorter;
+
+        public MainViewModel()
+        {
+            _multipleSorter = new MultipleSorter<int>(new []
+            {
+                new SorterDescription<int>("Пузырек", new BubleSorter<int>()), 
+                //new SorterDescription<int>("QuickSort", new QuickSorter<int>()), 
+                new SorterDescription<int>("Stooge", new StoogeSorter<int>())
+            });
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Пузырек",
+                    Values = new ChartValues<long>(new []{ 0L })
+                },
+                new LineSeries
+                {
+                    Title = "QuickSort",
+                    Values = new ChartValues<long>(new []{ 0L })
+                },
+                new LineSeries
+                {
+                    Title = "Stooge",
+                    Values = new ChartValues<long>(new []{ 0L })
+                }
+            };
+            Labels = new ObservableCollection<string>(new []{ "0" });
+        }
+
         #region Commands
         private ICommand _manualAddCommand;
         public ICommand ManualAddCommand
@@ -36,9 +72,9 @@ namespace MySorts.ViewModels
         {
             try
             {
-                var res = ArrayReader<int>.Read(ManualAddText);
-                // TODO
-                Thread.Sleep(5000);
+                if (string.IsNullOrEmpty(ManualAddText))
+                    return;
+                DoSort(ArrayReader<int>.Read(ManualAddText));
             }
             catch (Exception e)
             {
@@ -63,11 +99,40 @@ namespace MySorts.ViewModels
                     {
                         arr = ArrayReader<int>.Read(fs);
                     }
-                    var res = new BubleSorter<int>().Sort(arr);
-                    //TODO
-                    Thread.Sleep(5000);
+                    DoSort(arr);
                 })
                 .ContinueWith(task => IsSorting = false);
+            }
+        }
+
+        private void DoSort(int[] array)
+        {
+            IsSorting = true;
+            _multipleSorter
+                .Sort(array)
+                .ContinueWith(task =>
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        foreach (var sortResult in task.Result)
+                        {
+                            AddSortResult(sortResult);
+                        }
+                        IsSorting = false;
+                    });
+                });
+        }
+
+        private void AddSortResult(SortResult<int> sortResult)
+        {
+            var ser = SeriesCollection.Single(x => x.Title == sortResult.SorterDescription.SortAlgName);
+            for (int i = 0; i < ser.Values.Count; i++)
+            {
+                if ((long) ser.Values[i] < sortResult.TotalTimeMs)
+                {
+                    ser.Values.Insert(i, sortResult.TotalTimeMs);
+                    Labels.Insert(i, sortResult.ArrayLength.ToString());
+                }
             }
         }
         #endregion
@@ -96,6 +161,27 @@ namespace MySorts.ViewModels
             }
         }
 
+        private SeriesCollection _seriesCollection;
+        public SeriesCollection SeriesCollection
+        {
+            get => _seriesCollection;
+            set
+            {
+                _seriesCollection = value;
+                NotifyPropertyChanged(nameof(SeriesCollection));
+            }
+        }
+
+        private ObservableCollection<string> _labels;
+        public ObservableCollection<string> Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                NotifyPropertyChanged(nameof(Labels));
+            }
+        }
         #endregion
     }
 }
