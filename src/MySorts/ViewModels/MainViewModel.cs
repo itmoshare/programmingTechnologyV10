@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Microsoft.Win32;
 using MySorts.Models;
@@ -17,6 +19,7 @@ namespace MySorts.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private readonly MultipleSorter<int> _multipleSorter;
+        private readonly SortResultsStorage<int> _sortResultsStorage;
 
         public MainViewModel()
         {
@@ -26,25 +29,12 @@ namespace MySorts.ViewModels
                 //new SorterDescription<int>("QuickSort", new QuickSorter<int>()), 
                 new SorterDescription<int>("Stooge", new StoogeSorter<int>())
             });
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Пузырек",
-                    Values = new ChartValues<long>(new []{ 0L })
-                },
-                new LineSeries
-                {
-                    Title = "QuickSort",
-                    Values = new ChartValues<long>(new []{ 0L })
-                },
-                new LineSeries
-                {
-                    Title = "Stooge",
-                    Values = new ChartValues<long>(new []{ 0L })
-                }
-            };
-            Labels = new ObservableCollection<string>(new []{ "0" });
+            SeriesCollection = new SeriesCollection(
+                new CartesianMapper<SortResult<int>>()
+                .X(x => x.ArrayLength)
+                .Y(y => y.TotalTimeMs));
+            _sortResultsStorage = new SortResultsStorage<int>(SeriesCollection);
+            ClearExecute();
         }
 
         #region Commands
@@ -65,6 +55,16 @@ namespace MySorts.ViewModels
             {
                 return _fileAddCommand ?? (_fileAddCommand =
                            new Command((param) => true, FileAddExecute));
+            }
+        }
+
+        private ICommand _clearCommand;
+        public ICommand ClearCommand
+        {
+            get
+            {
+                return _clearCommand ?? (_clearCommand =
+                           new Command((param) => true, ClearExecute));
             }
         }
 
@@ -90,8 +90,7 @@ namespace MySorts.ViewModels
             };
             if (dialog.ShowDialog()== true)
             {
-                IsSorting = true;
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     int[] arr;
                     using (var s = dialog.OpenFile())
@@ -99,41 +98,46 @@ namespace MySorts.ViewModels
                     {
                         arr = ArrayReader<int>.Read(fs);
                     }
-                    DoSort(arr);
-                })
-                .ContinueWith(task => IsSorting = false);
+                    await DoSort(arr);
+                });
             }
         }
 
-        private void DoSort(int[] array)
+        private void ClearExecute()
+        {
+            _sortResultsStorage.Clear();
+            _sortResultsStorage.AddResults(new[]
+            {
+                new SortResult<int>
+                {
+                    ArrayLength = 0,
+                    TotalTimeMs = 0,
+                    SorterDescription = new SorterDescription<int>("Пузырек", null)
+                },
+                new SortResult<int>
+                {
+                    ArrayLength = 0,
+                    TotalTimeMs = 0,
+                    SorterDescription = new SorterDescription<int>("QuickSort", null)
+                },
+                new SortResult<int>
+                {
+                    ArrayLength = 0,
+                    TotalTimeMs = 0,
+                    SorterDescription = new SorterDescription<int>("Stooge", null)
+                },
+            });
+        }
+
+        private async Task DoSort(int[] array)
         {
             IsSorting = true;
-            _multipleSorter
-                .Sort(array)
-                .ContinueWith(task =>
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        foreach (var sortResult in task.Result)
-                        {
-                            AddSortResult(sortResult);
-                        }
-                        IsSorting = false;
-                    });
-                });
-        }
-
-        private void AddSortResult(SortResult<int> sortResult)
-        {
-            var ser = SeriesCollection.Single(x => x.Title == sortResult.SorterDescription.SortAlgName);
-            for (int i = 0; i < ser.Values.Count; i++)
+            var res = await _multipleSorter.Sort(array);
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                if ((long) ser.Values[i] < sortResult.TotalTimeMs)
-                {
-                    ser.Values.Insert(i, sortResult.TotalTimeMs);
-                    Labels.Insert(i, sortResult.ArrayLength.ToString());
-                }
-            }
+                _sortResultsStorage.AddResults(res);
+                IsSorting = false;
+            });
         }
         #endregion
 
@@ -171,17 +175,84 @@ namespace MySorts.ViewModels
                 NotifyPropertyChanged(nameof(SeriesCollection));
             }
         }
+        #endregion
 
-        private ObservableCollection<string> _labels;
-        public ObservableCollection<string> Labels
+        class SortResultsStorage<TValue>
         {
-            get => _labels;
-            set
+            private Dictionary<string, List<SortResult<TValue>>> _results;
+
+            private readonly SeriesCollection _series;
+
+            public SortResultsStorage(SeriesCollection series)
             {
-                _labels = value;
-                NotifyPropertyChanged(nameof(Labels));
+                _results = new Dictionary<string, List<SortResult<TValue>>>();
+                _series = series;
+            }
+
+            public void Clear()
+            {
+                _results = new Dictionary<string, List<SortResult<TValue>>>();
+                _series.Clear();
+            }
+
+            public void AddResults(IEnumerable<SortResult<TValue>> results)
+            {
+                foreach (var res in results)
+                {
+                    if (!_results.ContainsKey(res.SorterDescription.SortAlgName))
+                    {
+                        _results.Add(res.SorterDescription.SortAlgName, new List<SortResult<TValue>>());
+                        _series.Add(new LineSeries
+                        {
+                            Title = res.SorterDescription.SortAlgName,
+                            LineSmoothness = 0,
+                            Values = new ChartValues<SortResult<TValue>>()
+                        });
+                    }
+
+                    var curAlgResults = _results[res.SorterDescription.SortAlgName];
+                    bool inserted = false;
+                    for (int i = 0; i < curAlgResults.Count; i++)
+                    {
+                        // Get average result
+                        if (curAlgResults[i].ArrayLength == res.ArrayLength)
+                        {
+                            var avres = new SortResult<TValue>
+                            {
+                                SorterDescription = res.SorterDescription,
+                                ArrayLength = res.ArrayLength,
+                                TotalTimeMs = (res.TotalTimeMs + curAlgResults[i].TotalTimeMs) / 2
+                            };
+                            InsertResult(i, avres, true);
+                            inserted = true;
+                            break;
+                        }
+                        if (curAlgResults[i].ArrayLength > res.ArrayLength)
+                        {
+                            InsertResult(i, res);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    if (!inserted)
+                        InsertResult(curAlgResults.Count, res);
+                }
+            }
+
+            private void InsertResult(int i, SortResult<TValue> res, bool rewrite = false)
+            {
+                if (rewrite)
+                {
+                    _results[res.SorterDescription.SortAlgName][i] = res;
+                    _series.Single(x => x.Title == res.SorterDescription.SortAlgName).Values.RemoveAt(i);
+                    _series.Single(x => x.Title == res.SorterDescription.SortAlgName).Values.Insert(i, res);
+                }
+                else
+                {
+                    _results[res.SorterDescription.SortAlgName].Insert(i, res);
+                    _series.Single(x => x.Title == res.SorterDescription.SortAlgName).Values.Insert(i, res);
+                }
             }
         }
-        #endregion
     }
 }

@@ -19,6 +19,7 @@ namespace MySorts.Models
             var str = stream.ReadToEnd();
             return str
                 .Split(' ')
+                .Where(x => !string.IsNullOrEmpty(x))
                 .Select(x => (TValue) Convert.ChangeType(x, typeof(TValue)))
                 .ToArray();
         }

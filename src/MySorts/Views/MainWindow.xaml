@@ -29,6 +29,7 @@
                             </Button>
                         </Grid>
                         <Button Margin="2" Padding="2" Command="{Binding FileAddCommand}">Загрузить из файла</Button>
+                        <Button Margin="2" Padding="2" Command="{Binding ClearCommand}">Очистить</Button>
                     </StackPanel>
                 </xctk:BusyIndicator>
             </GroupBox>
@@ -38,7 +39,7 @@
                 <lvc:Axis Title="Время сортировки"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Размер массива" Labels="{Binding Labels}"></lvc:Axis>
+                <lvc:Axis Title="Размер массива"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>

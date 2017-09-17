@@ -1,4 +1,6 @@
-﻿namespace MySorts.Models
+﻿using System;
+
+namespace MySorts.Models
 {
     public class SortResult<TValue>
     {
