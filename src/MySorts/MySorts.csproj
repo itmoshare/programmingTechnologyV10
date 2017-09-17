@@ -99,6 +99,7 @@
     <Compile Include="Models\IArraySorter.cs" />
     <Compile Include="Models\MultipleSorter.cs" />
     <Compile Include="Models\QuickSorter.cs" />
+    <Compile Include="Models\ShellSorter.cs" />
     <Compile Include="Models\SorterDescription.cs" />
     <Compile Include="Models\SortResult.cs" />
     <Compile Include="Models\StoogeSorter.cs" />

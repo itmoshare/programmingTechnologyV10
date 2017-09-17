@@ -26,8 +26,9 @@ namespace MySorts.ViewModels
             _multipleSorter = new MultipleSorter<int>(new []
             {
                 new SorterDescription<int>("Пузырек", new BubleSorter<int>()), 
-                //new SorterDescription<int>("QuickSort", new QuickSorter<int>()), 
-                new SorterDescription<int>("Stooge", new StoogeSorter<int>())
+                new SorterDescription<int>("QuickSort", new QuickSorter<int>()), 
+                new SorterDescription<int>("Shell", new ShellSorter<int>())
+                //new SorterDescription<int>("Stooge", new StoogeSorter<int>())
             });
             SeriesCollection = new SeriesCollection(
                 new CartesianMapper<SortResult<int>>()

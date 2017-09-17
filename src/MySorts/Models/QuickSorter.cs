@@ -8,7 +8,7 @@ namespace MySorts.Models
         public TValue[] Sort(TValue[] source)
         {
             var res = source.ToArray();
-            QuicksortInner(res, 0, res.Length);
+            QuicksortInner(res, 0, res.Length - 1);
             return res;
         }
 
