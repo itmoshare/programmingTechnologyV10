@@ -1,4 +1,6 @@
-﻿namespace MySorts.Models
+﻿using MySorts.Models.Sorters;
+
+namespace MySorts.Models
 {
     public class SorterDescription<TValue>
     {

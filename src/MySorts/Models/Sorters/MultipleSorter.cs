@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MySorts.Models
+namespace MySorts.Models.Sorters
 {
     public class MultipleSorter<TValue>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MySorts.Models
+namespace MySorts.Models.Sorters
 {
     public class QuickSorter<TValue> : IArraySorter<TValue>
     {

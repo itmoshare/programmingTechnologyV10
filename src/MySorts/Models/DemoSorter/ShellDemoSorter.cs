@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MySorts.Models
+namespace MySorts.Models.DemoSorter
 {
-    class ShellSorter<TValue> : IArraySorter<TValue>
+    public class ShellDemoSorter<TValue> : IDemoSorter<TValue>
     {
-        public TValue[] Sort(TValue[] source)
-        {
-            var res = source.ToArray();
-            ShellSort(res);
-            return res;
-        }
+        public string Name => "Сортировка Шелла";
 
-        static void ShellSort(TValue[] arr)
+        public IEnumerable<DemoSortStep<TValue>> Steps(IEnumerable<TValue> source)
         {
+            var arr = source.ToArray();
             int i, j, inc;
             inc = 3;
             while (inc > 0)
@@ -29,6 +24,12 @@ namespace MySorts.Models
                         j = j - inc;
                     }
                     arr[j] = temp;
+                    yield return new DemoSortStep<TValue>
+                    {
+                        NewArr = arr.ToArray(),
+                        SwappedIndex1 = i,
+                        SwappedIndex2 = j
+                    };
                 }
                 if (inc / 2 != 0)
                     inc = inc / 2;

@@ -1,4 +1,4 @@
-﻿namespace MySorts.Models
+﻿namespace MySorts.Models.Sorters
 {
     public interface IArraySorter<TValue>
     {

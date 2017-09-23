@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -13,6 +10,9 @@ using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Microsoft.Win32;
 using MySorts.Models;
+using MySorts.Models.DemoSorter;
+using MySorts.Models.Sorters;
+using MySorts.Views;
 
 namespace MySorts.ViewModels
 {
@@ -28,7 +28,6 @@ namespace MySorts.ViewModels
                 new SorterDescription<int>("Пузырек", new BubleSorter<int>()), 
                 new SorterDescription<int>("QuickSort", new QuickSorter<int>()), 
                 new SorterDescription<int>("Shell", new ShellSorter<int>())
-                //new SorterDescription<int>("Stooge", new StoogeSorter<int>())
             });
             SeriesCollection = new SeriesCollection(
                 new CartesianMapper<SortResult<int>>()
@@ -46,6 +45,16 @@ namespace MySorts.ViewModels
             {
                 return _manualAddCommand ?? (_manualAddCommand =
                     new Command((param) => true, ManualAddExecute));
+            }
+        }
+
+        private ICommand _demoSortCommand;
+        public ICommand DemoSortCommand
+        {
+            get
+            {
+                return _demoSortCommand ?? (_demoSortCommand =
+                           new Command((param) => true, DemoSortExecute));
             }
         }
 
@@ -81,6 +90,19 @@ namespace MySorts.ViewModels
             {
                 MessageBox.Show(e.Message, "Error");
             }
+        }
+
+        private void DemoSortExecute()
+        {
+            var demoSortWindow = new DemoSortWindow();
+            demoSortWindow.ViewModel = new DemoSortViewModel(
+                ArrayReader<int>.Read(ManualAddText), new IDemoSorter<int>[]
+                {
+                    new BubleDemoSorter<int>(), 
+                    new ShellDemoSorter<int>(),
+                    new QuickDemoSorter<int>(), 
+                });
+            demoSortWindow.ShowDialog();
         }
 
         private void FileAddExecute()

@@ -86,6 +86,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\DemoSortWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,16 +99,25 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\ArrayReader.cs" />
-    <Compile Include="Models\BubleSorter.cs" />
-    <Compile Include="Models\IArraySorter.cs" />
-    <Compile Include="Models\MultipleSorter.cs" />
-    <Compile Include="Models\QuickSorter.cs" />
-    <Compile Include="Models\ShellSorter.cs" />
+    <Compile Include="Models\DemoSorter\BubleSorter.cs" />
+    <Compile Include="Models\DemoSorter\DemoSortStep.cs" />
+    <Compile Include="Models\DemoSorter\IDemoSorter.cs" />
+    <Compile Include="Models\DemoSorter\QuickDemoSorter.cs" />
+    <Compile Include="Models\DemoSorter\ShellDemoSorter.cs" />
+    <Compile Include="Models\Sorters\BubleSorter.cs" />
+    <Compile Include="Models\Sorters\IArraySorter.cs" />
+    <Compile Include="Models\Sorters\MultipleSorter.cs" />
+    <Compile Include="Models\Sorters\QuickSorter.cs" />
+    <Compile Include="Models\Sorters\ShellSorter.cs" />
     <Compile Include="Models\SorterDescription.cs" />
     <Compile Include="Models\SortResult.cs" />
-    <Compile Include="Models\StoogeSorter.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\DemoSorterResultViewModel.cs" />
+    <Compile Include="ViewModels\DemoSortViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\DemoSortWindow.xaml.cs">
+      <DependentUpon>DemoSortWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -137,9 +150,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\ic_play_circle_outline_black_24dp.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_add_black_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_skip_next_black_24dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
