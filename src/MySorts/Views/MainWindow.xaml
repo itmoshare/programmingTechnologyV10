@@ -25,10 +25,10 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Width="150" MaxLength="20" VerticalContentAlignment="Center" Text="{Binding ManualAddText}" PreviewTextInput="UIElement_OnPreviewTextInput"/>
-                            <Button Grid.Column="1" Command="{Binding DemoSortCommand}">
+                            <Button Grid.Column="1" Command="{Binding DemoSortCommand}" ToolTip="Демонстрация">
                                 <Image Source="/Images/ic_play_circle_outline_black_24dp.png"></Image>
                             </Button>
-                            <Button Grid.Column="2" Command="{Binding ManualAddCommand}">
+                            <Button Grid.Column="2" Command="{Binding ManualAddCommand}" ToolTip="Отсортировать">
                                 <Image Source="/Images/ic_add_black_24dp.png"></Image>
                             </Button>
                         </Grid>

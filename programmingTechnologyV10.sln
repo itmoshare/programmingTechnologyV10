@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6B9FB1DB-9988-46AB-AE27-5EEA33D2E3DC}"
 EndProject
@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySorts", "src\MySorts\MySo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{76D6E368-88EC-40BC-8270-BF9FB7434731}"
 	ProjectSection(SolutionItems) = preProject
+		docs\docs.docx = docs\docs.docx
 		docs\task.docx = docs\task.docx
 	EndProjectSection
 EndProject
@@ -71,22 +72,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{52AA
 		samples\generate.py = samples\generate.py
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "src\Setup\Setup.vdproj", "{92102CC3-355E-4642-A68D-08992054A941}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Debug|x86.Build.0 = Debug|Any CPU
 		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Release|x86.ActiveCfg = Release|Any CPU
+		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E}.Release|x86.Build.0 = Release|Any CPU
+		{92102CC3-355E-4642-A68D-08992054A941}.Debug|Any CPU.ActiveCfg = Debug
+		{92102CC3-355E-4642-A68D-08992054A941}.Debug|x86.ActiveCfg = Debug
+		{92102CC3-355E-4642-A68D-08992054A941}.Release|Any CPU.ActiveCfg = Release
+		{92102CC3-355E-4642-A68D-08992054A941}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A8585D1D-0DFF-4C0D-B68A-4D739600FA6E} = {6B9FB1DB-9988-46AB-AE27-5EEA33D2E3DC}
+		{92102CC3-355E-4642-A68D-08992054A941} = {6B9FB1DB-9988-46AB-AE27-5EEA33D2E3DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {16580EFB-3BAA-4874-82C6-378E0C468672}
