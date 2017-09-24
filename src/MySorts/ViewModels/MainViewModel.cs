@@ -113,7 +113,7 @@ namespace MySorts.ViewModels
             };
             if (dialog.ShowDialog()== true)
             {
-                Task.Run(async () =>
+                Task.Factory.StartNew(async () =>
                 {
                     int[] arr;
                     using (var s = dialog.OpenFile())
