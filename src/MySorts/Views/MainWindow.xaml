@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Добавить данные">
-                <xctk:BusyIndicator IsBusy="{Binding IsSorting}" BusyContent="Идет сортировка новых данных">
+                <xctk:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="Идет обработка данных">
                     <StackPanel Orientation="Vertical">
                         <Grid Margin="2">
                             <Grid.ColumnDefinitions>
@@ -33,6 +33,7 @@
                             </Button>
                         </Grid>
                         <Button Margin="2" Padding="2" Command="{Binding FileAddCommand}">Загрузить из файла</Button>
+                        <Button Margin="2" Padding="2" Command="{Binding FileSaveCommand}">Сохранить последний результат</Button>
                         <Button Margin="2" Padding="2" Command="{Binding ClearCommand}">Очистить</Button>
                     </StackPanel>
                 </xctk:BusyIndicator>

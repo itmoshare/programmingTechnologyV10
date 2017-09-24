@@ -98,7 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\ArrayReader.cs" />
+    <Compile Include="Models\ArrayIO.cs" />
     <Compile Include="Models\DemoSorter\BubleSorter.cs" />
     <Compile Include="Models\DemoSorter\DemoSortStep.cs" />
     <Compile Include="Models\DemoSorter\IDemoSorter.cs" />

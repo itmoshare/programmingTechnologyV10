@@ -22,10 +22,11 @@ namespace MySorts.Models.Sorters
                 {
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
-                    sorterDescription.Sorter.Sort(array);
+                    var sortedArr = sorterDescription.Sorter.Sort(array);
                     stopwatch.Stop();
                     res.Add(new SortResult<TValue>
                     {
+                        SortedArray = sortedArr,
                         ArrayLength = array.Length,
                         SorterDescription = sorterDescription,
                         TotalTimeMs = stopwatch.ElapsedMilliseconds

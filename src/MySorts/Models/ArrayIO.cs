@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MySorts.Models
 {
-    public static class ArrayReader<TValue>
+    // ReSharper disable once InconsistentNaming
+    public static class ArrayIO<TValue>
     {
         public static TValue[] Read(string str)
         {
@@ -22,6 +24,12 @@ namespace MySorts.Models
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Select(x => (TValue) Convert.ChangeType(x, typeof(TValue)))
                 .ToArray();
+        }
+
+        public static async Task Write(TextWriter writer, TValue[] arr)
+        {
+            var res = string.Concat(arr.Select(x => x.ToString() + " "));
+            await writer.WriteLineAsync(res);
         }
     }
 }

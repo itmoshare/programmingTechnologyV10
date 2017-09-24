@@ -20,6 +20,7 @@ namespace MySorts.ViewModels
     {
         private readonly MultipleSorter<int> _multipleSorter;
         private readonly SortResultsStorage<int> _sortResultsStorage;
+        private int[] _lastResult;
 
         public MainViewModel()
         {
@@ -68,6 +69,16 @@ namespace MySorts.ViewModels
             }
         }
 
+        private ICommand _fileSaveCommand;
+        public ICommand FileSaveCommand
+        {
+            get
+            {
+                return _fileSaveCommand ?? (_fileSaveCommand =
+                           new Command((param) => true, FileSaveExecute));
+            }
+        }
+
         private ICommand _clearCommand;
         public ICommand ClearCommand
         {
@@ -84,7 +95,7 @@ namespace MySorts.ViewModels
             {
                 if (string.IsNullOrEmpty(ManualAddText))
                     return;
-                DoSort(ArrayReader<int>.Read(ManualAddText));
+                DoSort(ArrayIO<int>.Read(ManualAddText));
             }
             catch (Exception e)
             {
@@ -96,7 +107,7 @@ namespace MySorts.ViewModels
         {
             var demoSortWindow = new DemoSortWindow();
             demoSortWindow.ViewModel = new DemoSortViewModel(
-                ArrayReader<int>.Read(ManualAddText), new IDemoSorter<int>[]
+                ArrayIO<int>.Read(ManualAddText), new IDemoSorter<int>[]
                 {
                     new BubleDemoSorter<int>(), 
                     new ShellDemoSorter<int>(),
@@ -119,15 +130,43 @@ namespace MySorts.ViewModels
                     using (var s = dialog.OpenFile())
                     using (var fs = new StreamReader(s))
                     {
-                        arr = ArrayReader<int>.Read(fs);
+                        arr = ArrayIO<int>.Read(fs);
                     }
                     await DoSort(arr);
                 });
             }
         }
 
+        private void FileSaveExecute()
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "TXT|*.txt"
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                Task.Factory.StartNew(async () =>
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        IsBusy = true;
+                    });
+                    using (var stream = dialog.OpenFile())
+                    using (var streamWriter = new StreamWriter(stream))
+                    {
+                        await ArrayIO<int>.Write(streamWriter, _lastResult);
+                    }
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        IsBusy = false;
+                    });
+                });
+            }
+        }
+
         private void ClearExecute()
         {
+            _lastResult = new int[0];
             _sortResultsStorage.Clear();
             _sortResultsStorage.AddResults(new[]
             {
@@ -154,26 +193,27 @@ namespace MySorts.ViewModels
 
         private async Task DoSort(int[] array)
         {
-            IsSorting = true;
+            IsBusy = true;
             var res = await _multipleSorter.Sort(array);
             Application.Current.Dispatcher.Invoke(() =>
             {
+                _lastResult = res.First().SortedArray;
                 _sortResultsStorage.AddResults(res);
-                IsSorting = false;
+                IsBusy = false;
             });
         }
         #endregion
 
         #region Observable
 
-        private bool _isSorting;
-        public bool IsSorting
+        private bool _isBusy;
+        public bool IsBusy
         {
-            get=>_isSorting;
+            get=>_isBusy;
             set
             {
-                _isSorting = value;
-                NotifyPropertyChanged(nameof(IsSorting));
+                _isBusy = value;
+                NotifyPropertyChanged(nameof(IsBusy));
             }
         }
 
