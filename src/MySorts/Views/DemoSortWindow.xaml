@@ -41,7 +41,7 @@
                 <DataGridTemplateColumn Header="Текущий рез-тат" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding CurResult}" Style="{StaticResource ArrayIetmsControl}"></ItemsControl>
+                            <ItemsControl ItemsSource="{Binding CurResult}" FontWeight="{Binding FontWeight}" Style="{StaticResource ArrayIetmsControl}"></ItemsControl>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

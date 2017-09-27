@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media;
 using MySorts.Models.DemoSorter;
 
@@ -54,6 +55,8 @@ namespace MySorts.ViewModels
         {
             public SolidColorBrush SolidColorBrush { get; set; }
 
+            public FontWeight FontWeight { get; set; }
+
             public int Data { get; set; }
         }
 
@@ -62,10 +65,12 @@ namespace MySorts.ViewModels
             CurResult = step.NewArr.Select(x => new ColoredIntViewModel
             {
                 Data = x,
-                SolidColorBrush = new SolidColorBrush(Colors.Black)
+                SolidColorBrush = new SolidColorBrush(Colors.Black),
             }).ToArray();
-            CurResult[step.SwappedIndex1].SolidColorBrush = new SolidColorBrush(Colors.Green);
-            CurResult[step.SwappedIndex2].SolidColorBrush = new SolidColorBrush(Colors.Green);
+            CurResult[step.SwappedIndex1].SolidColorBrush = new SolidColorBrush(Colors.Red);
+            CurResult[step.SwappedIndex1].FontWeight = FontWeights.Bold; 
+            CurResult[step.SwappedIndex2].SolidColorBrush = new SolidColorBrush(Colors.Red);
+            CurResult[step.SwappedIndex2].FontWeight = FontWeights.Bold;
         }
     }
 }

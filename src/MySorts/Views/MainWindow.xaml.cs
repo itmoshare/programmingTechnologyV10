@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,6 +27,8 @@ namespace MySorts.Views
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+            XAxis.LabelFormatter = d => Math.Round(d, 2).ToString(CultureInfo.InvariantCulture);
+            YAxis.LabelFormatter = d => Math.Round(d, 2).ToString(CultureInfo.InvariantCulture);
         }
 
         private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)

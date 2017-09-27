@@ -186,7 +186,7 @@ namespace MySorts.ViewModels
                 {
                     ArrayLength = 0,
                     TotalTimeMs = 0,
-                    SorterDescription = new SorterDescription<int>("Stooge", null)
+                    SorterDescription = new SorterDescription<int>("Shell", null)
                 },
             });
         }
