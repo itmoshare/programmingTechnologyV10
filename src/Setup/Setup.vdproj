@@ -442,12 +442,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5DD596D0E364C3F9BE4D06EFF5652944"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_78D571D636A34E6B85648ABFF75B2D07"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -499,6 +493,12 @@
         "OwnerKey" = "8:_1E08106718E663F38219A7C2A83565C6"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5DD596D0E364C3F9BE4D06EFF5652944"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -517,6 +517,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -533,6 +541,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -2149,7 +2165,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3055AF030CE0456BB94FB5B1CCD93BCA"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E35A609D92A2426A9C4E5CA620E20710"
             {
             "Name" = "8:Sorts"
             "Arguments" = "8:"
@@ -2157,9 +2173,9 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_1AD7DAA16C7846E7805490F0E2874F24"
+            "Target" = "8:_78D571D636A34E6B85648ABFF75B2D07"
             "Folder" = "8:_1AD7DAA16C7846E7805490F0E2874F24"
-            "WorkingFolder" = "8:_1AD7DAA16C7846E7805490F0E2874F24"
+            "WorkingFolder" = "8:_55E21F0996B345F6886DA0FF5D6385D1"
             "Icon" = "8:"
             "Feature" = "8:"
             }
@@ -2620,7 +2636,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_78D571D636A34E6B85648ABFF75B2D07"
             {
-            "SourcePath" = "8:..\\MySorts\\obj\\Debug\\MySorts.exe"
+            "SourcePath" = "8:..\\MySorts\\obj\\Release\\MySorts.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_55E21F0996B345F6886DA0FF5D6385D1"

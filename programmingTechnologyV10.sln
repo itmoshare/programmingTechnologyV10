@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{76D6E368-88EC-40BC-8270-BF9FB7434731}"
 	ProjectSection(SolutionItems) = preProject
 		docs\docs.docx = docs\docs.docx
+		docs\report.docx = docs\report.docx
 		docs\task.docx = docs\task.docx
 	EndProjectSection
 EndProject
